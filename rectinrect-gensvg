@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+# encoding=UTF-8
+
+# Copyright © 2022 Jakub Wilk <jwilk@jwilk.net>
+# SPDX-License-Identifier: MIT
+
+import unittest.mock
+import os
+
+from sympy import sqrt, Rational, Point2D
+
+with unittest.mock.patch.dict(os.environ, PATH='/nonexistent'):
+    # tqdm wants to execute git for no good reason:
+    # https://github.com/tqdm/tqdm/issues/328
+    # Let's foil this plan:
+    import tqdm
+
+0_0  # Python >= 3.6 is required
+
+def svg_begin(wd, ht):
+    wd = float(wd)
+    ht = float(ht)
+    print(f'<svg viewBox="{-0.1*wd} -{0.1*ht} {1.2*wd} {1.2*ht}" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="0.1%">')
+
+def svg_poly(*pts, stroke='black'):
+    print('<polygon points="')
+    for pt in pts:
+        print(f'{float(pt.x)},{float(pt.y)}')
+    print(f'" stroke="{stroke}"/>')
+
+def svg_end():
+    print('</svg>')
+
+X = 1
+Y = sqrt(2)
+
+def ok(pt):
+    return 0 <= pt.x <= X and 0 <= pt.y <= Y
+
+def main():
+    X = 1
+    Y = sqrt(2)
+    svg_begin(X, Y)
+    svg_poly(Point2D(0, 0), Point2D(0, Y), Point2D(X, Y), Point2D(X, 0))
+    nsteps = 60
+    for i in tqdm.trange(1, nsteps):
+        x0 = Rational(i, nsteps)
+        y0 = sqrt(Y ** 2 - x0 ** 2)
+        A = Point2D(x0, 0)
+        B = Point2D(0, y0)
+        C = Point2D((Y - y0) * (y0 / x0), Y)
+        D = Point2D(X, (X - x0) * (x0 / y0))
+        Cp = D.translate(-x0, y0)
+        Dp = C.translate(x0, -y0)
+        if ok(Cp) and ok(D):
+            svg_poly(A, B, Cp, D, stroke='blue')
+        if ok(C) and ok(Dp):
+            svg_poly(A, B, C, Dp, stroke='red')
+    svg_end()
+
+if __name__ == '__main__':
+    main()
+
+# vim:ts=4 sts=4 sw=4 et
