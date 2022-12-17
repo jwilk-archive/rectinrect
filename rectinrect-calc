@@ -7,6 +7,7 @@
 from sympy import (
         Point2D,
         Rational,
+        expand,
         pprint,
         simplify,
         solve,
@@ -32,6 +33,7 @@ def main():
     S = B.distance(C) - B.distance(Cp)
     [p_max] = (p for p in solve(S) if p != Rational(4, 3))
     pprint(p_max)
+    p_max = expand(p_max, complex=True)
     dist = B.distance(C).subs(p, p_max)
     dist = simplify(dist)
     pprint(dist)
