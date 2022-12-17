@@ -4,6 +4,7 @@
 # Copyright © 2022 Jakub Wilk <jwilk@jwilk.net>
 # SPDX-License-Identifier: MIT
 
+import itertools
 import unittest.mock
 import os
 
@@ -26,11 +27,19 @@ def svg_begin(wd, ht):
     ht = float(ht)
     print(f'<svg viewBox="{-0.1*wd} -{0.1*ht} {1.2*wd} {1.2*ht}" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="0.1%">')
 
+def fmt_vts(vts):
+    return str.join(' ', (f'{float(vt.x)},{float(vt.y)}' for vt in vts))
+
 def svg_poly(*vts, stroke='black'):
-    print('<polygon points="')
-    for vt in vts:
-        print(f'{float(vt.x)},{float(vt.y)}')
-    print(f'" stroke="{stroke}"/>')
+    print(f'<polygon points="{fmt_vts(vts)}" stroke="{stroke}"/>')
+
+def svg_anim_poly(polys, stroke='black'):
+    print(f'<polygon stroke="{stroke}">')
+    print('<animate attributeName="points" dur="10s" repeatCount="indefinite" values="')
+    for poly in itertools.chain(polys, reversed(polys)):
+        print(fmt_vts(poly), end=';\n')
+    print('"/>')
+    print("</polygon>")
 
 def svg_end():
     print('</svg>')
@@ -47,6 +56,7 @@ def main():
     svg_begin(X, Y)
     svg_poly(Point2D(0, 0), Point2D(0, Y), Point2D(X, Y), Point2D(X, 0))
     nsteps = 60
+    rects = []
     for i in tqdm.trange(1, nsteps):
         p = Rational(i, nsteps)
         q = sqrt(Y ** 2 - p ** 2)
@@ -57,9 +67,10 @@ def main():
         Cp = D.translate(-p, q)
         Dp = C.translate(p, -q)
         if ok(Cp) and ok(D):
-            svg_poly(A, B, Cp, D, stroke='blue')
+            rects += [(A, B, Cp, D)]
         if ok(C) and ok(Dp):
-            svg_poly(A, B, C, Dp, stroke='red')
+            rects += [(A, B, C, Dp)]
+    svg_anim_poly(rects, stroke='purple')
     svg_end()
 
 if __name__ == '__main__':
