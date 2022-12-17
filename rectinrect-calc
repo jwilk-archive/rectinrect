@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+# encoding=UTF-8
+
+# Copyright © 2022 Jakub Wilk <jwilk@jwilk.net>
+# SPDX-License-Identifier: MIT
+
+from sympy import (
+        Point2D,
+        Rational,
+        pprint,
+        simplify,
+        solve,
+        sqrt,
+        var,
+)
+
+X = 1
+Y = sqrt(2)
+
+def main():
+    X = 1
+    Y = sqrt(2)
+    p = var('p', positive=True)
+    q = sqrt(Y ** 2 - p ** 2)
+    A = Point2D(p, 0)
+    B = Point2D(0, q)
+    C = Point2D((Y - q) * (q / p), Y)
+    D = Point2D(X, (X - p) * (p / q))
+    Cp = D.translate(-p, q)
+    Dp = C.translate(p, -q)
+    del A, Dp  # not used for this calculation
+    S = B.distance(C) - B.distance(Cp)
+    [p_max] = (p for p in solve(S) if p != Rational(4, 3))
+    pprint(p_max)
+    dist = B.distance(C).subs(p, p_max)
+    dist = simplify(dist)
+    pprint(dist)
+    fdist = float(dist)
+    print('≈', fdist)
+
+if __name__ == '__main__':
+    main()
+
+# vim:ts=4 sts=4 sw=4 et
