@@ -26,10 +26,10 @@ def svg_begin(wd, ht):
     ht = float(ht)
     print(f'<svg viewBox="{-0.1*wd} -{0.1*ht} {1.2*wd} {1.2*ht}" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="0.1%">')
 
-def svg_poly(*pts, stroke='black'):
+def svg_poly(*vts, stroke='black'):
     print('<polygon points="')
-    for pt in pts:
-        print(f'{float(pt.x)},{float(pt.y)}')
+    for vt in vts:
+        print(f'{float(vt.x)},{float(vt.y)}')
     print(f'" stroke="{stroke}"/>')
 
 def svg_end():
