@@ -18,7 +18,12 @@ with unittest.mock.patch.dict(os.environ, PATH='/nonexistent'):
     # tqdm wants to execute git for no good reason:
     # https://github.com/tqdm/tqdm/issues/328
     # Let's foil this plan:
-    import tqdm
+    try:
+        import tqdm
+    except ImportError:
+        trange = range
+    else:
+        trange = tqdm.trange
 
 0_0  # Python >= 3.6 is required
 
@@ -64,7 +69,7 @@ def main():
     svg_poly(Point2D(0, 0), Point2D(0, Y), Point2D(X, Y), Point2D(X, 0))
     nsteps = 60
     rects = []
-    for i in tqdm.trange(1, nsteps):
+    for i in trange(1, nsteps):
         p = Rational(i, nsteps)
         q = sqrt(Y ** 2 - p ** 2)
         A = Point2D(p, 0)
