@@ -22,13 +22,17 @@ with unittest.mock.patch.dict(os.environ, PATH='/nonexistent'):
 
 0_0  # Python >= 3.6 is required
 
+def fmt_float(x):
+    x = float(x)
+    return f'{x:.6}'
+
 def svg_begin(wd, ht):
-    wd = float(wd)
-    ht = float(ht)
-    print(f'<svg viewBox="{-0.1*wd} -{0.1*ht} {1.2*wd} {1.2*ht}" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="0.1%">')
+    f = fmt_float
+    print(f'<svg viewBox="{f(-0.1*wd)} {f(-0.1*ht)} {f(1.2*wd)} {f(1.2*ht)}" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="0.1%">')
 
 def fmt_vts(vts):
-    return str.join(' ', (f'{float(vt.x)},{float(vt.y)}' for vt in vts))
+    f = fmt_float
+    return str.join(' ', (f'{f(vt.x)},{f(vt.y)}' for vt in vts))
 
 def svg_poly(*vts, stroke='black'):
     print(f'<polygon points="{fmt_vts(vts)}" stroke="{stroke}"/>')
