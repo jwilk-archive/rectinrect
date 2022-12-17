@@ -6,9 +6,7 @@ all: rectinrect.svg
 
 rectinrect.svg: rectinrect-gensvg
 	./rectinrect-gensvg > $(@).tmp
-	scour $(@).tmp > $(@).scour.tmp
-	mv $(@).scour.tmp $(@)
-	rm -f $(@).scour.tmp $(@).tmp
+	mv $(@).tmp $(@)
 
 .PHONY: clean
 clean:
