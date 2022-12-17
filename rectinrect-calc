@@ -8,7 +8,6 @@ from sympy import (
         Point2D,
         Rational,
         expand,
-        pprint,
         simplify,
         solve,
         sqrt,
@@ -32,13 +31,13 @@ def main():
     del A, Dp  # not used for this calculation
     S = B.distance(C) - B.distance(Cp)
     [p_max] = (p for p in solve(S) if p != Rational(4, 3))
-    pprint(p_max)
+    print('pₘₐₓ =', p_max)
     p_max = expand(p_max, complex=True)
     dist = B.distance(C).subs(p, p_max)
     dist = simplify(dist)
-    pprint(dist)
+    print('wₘₐₓ =', dist)
     fdist = float(dist)
-    print('≈', fdist)
+    print('     ≈', fdist)
 
 if __name__ == '__main__':
     main()
