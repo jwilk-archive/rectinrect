@@ -44,14 +44,14 @@ def main():
     svg_poly(Point2D(0, 0), Point2D(0, Y), Point2D(X, Y), Point2D(X, 0))
     nsteps = 60
     for i in tqdm.trange(1, nsteps):
-        x0 = Rational(i, nsteps)
-        y0 = sqrt(Y ** 2 - x0 ** 2)
-        A = Point2D(x0, 0)
-        B = Point2D(0, y0)
-        C = Point2D((Y - y0) * (y0 / x0), Y)
-        D = Point2D(X, (X - x0) * (x0 / y0))
-        Cp = D.translate(-x0, y0)
-        Dp = C.translate(x0, -y0)
+        p = Rational(i, nsteps)
+        q = sqrt(Y ** 2 - p ** 2)
+        A = Point2D(p, 0)
+        B = Point2D(0, q)
+        C = Point2D((Y - q) * (q / p), Y)
+        D = Point2D(X, (X - p) * (p / q))
+        Cp = D.translate(-p, q)
+        Dp = C.translate(p, -q)
         if ok(Cp) and ok(D):
             svg_poly(A, B, Cp, D, stroke='blue')
         if ok(C) and ok(Dp):
