@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+# encoding=UTF-8
+
+# Copyright © 2022 Jakub Wilk <jwilk@jwilk.net>
+# SPDX-License-Identifier: MIT
+
+
+from sympy import (
+    var,
+    sqrt,
+    solve,
+    solveset,
+    S,
+    simplify,
+)
+
+X = 1
+Y = sqrt(2)
+
+def main():
+    q = var('q', positive=True)
+    p = var('p', positive=True)
+    ps = solve(q / p - (X - p) / (Y - q), p)
+    for p in ps:
+        hh = (X - p) ** 2 + (Y - q) ** 2
+        for q_max in solveset(hh - Y ** 2, q, domain=S.Reals):
+            if q_max == 0:
+                continue
+            ww_max = (p ** 2 + q ** 2).subs(q, q_max)
+            w_max = sqrt(ww_max)
+            w_max = simplify(w_max)
+            print('wₘₐₓ =', w_max)
+            w_max_fl = float(w_max)
+            assert 0.36 < w_max_fl < 0.37
+            print('     ≈', w_max_fl)
+            return
+
+if __name__ == '__main__':
+    main()
+
+# vim:ts=4 sts=4 sw=4 et
