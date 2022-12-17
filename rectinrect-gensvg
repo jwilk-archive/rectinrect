@@ -7,7 +7,11 @@
 import unittest.mock
 import os
 
-from sympy import sqrt, Rational, Point2D
+from sympy import (
+    Point2D,
+    Rational,
+    sqrt,
+)
 
 with unittest.mock.patch.dict(os.environ, PATH='/nonexistent'):
     # tqdm wants to execute git for no good reason:
