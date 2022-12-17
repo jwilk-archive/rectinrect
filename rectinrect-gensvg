@@ -28,7 +28,8 @@ def fmt_float(x):
 
 def svg_begin(wd, ht):
     f = fmt_float
-    print(f'<svg viewBox="{f(-0.1*wd)} {f(-0.1*ht)} {f(1.2*wd)} {f(1.2*ht)}" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="0.1%">')
+    print(f'<svg viewBox="{f(-0.1*ht)} {f(-0.1*wd)} {f(1.2*ht)} {f(1.2*wd)}" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="0.1%">')
+    print('<g transform="rotate(-90) translate(-1, 0)">')
 
 def fmt_vts(vts):
     f = fmt_float
@@ -46,6 +47,7 @@ def svg_anim_poly(polys, stroke='black'):
     print("</polygon>")
 
 def svg_end():
+    print('</g>')
     print('</svg>')
 
 X = 1
