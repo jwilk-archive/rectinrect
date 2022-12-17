@@ -33,11 +33,11 @@ def main():
     [p_max] = (p for p in solve(S) if p != Rational(4, 3))
     print('pₘₐₓ =', p_max)
     p_max = expand(p_max, complex=True)
-    dist = B.distance(C).subs(p, p_max)
-    dist = simplify(dist)
-    print('wₘₐₓ =', dist)
-    fdist = float(dist)
-    print('     ≈', fdist)
+    w_max = B.distance(C).subs(p, p_max)
+    w_max = simplify(w_max)
+    print('wₘₐₓ =', w_max)
+    w_max_fl = float(w_max)
+    print('     ≈', w_max_fl)
 
 if __name__ == '__main__':
     main()
