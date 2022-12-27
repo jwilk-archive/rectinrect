@@ -5,13 +5,13 @@
 # SPDX-License-Identifier: MIT
 
 from sympy import (
-        Point2D,
-        Rational,
-        expand,
-        simplify,
-        solve,
-        sqrt,
-        var,
+    Point2D,
+    Rational,
+    expand,
+    simplify,
+    solve,
+    sqrt,
+    var,
 )
 
 X = 1
