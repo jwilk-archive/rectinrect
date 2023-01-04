@@ -16,6 +16,12 @@ from sympy import (
 X = 1
 Y = sqrt(2)
 
+# X, Y - lengths of the outer rectangle (OPQR) sides
+# w, h - lengths of the inner rectangle (ABCD) sides
+# the inner rectangle is inscribed with all 4 verticles
+# p = distance(O, A)
+# q = distance(O, B)
+
 def main():
     q = var('q', positive=True)
     p = var('p', positive=True)
